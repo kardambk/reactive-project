@@ -1,0 +1,106 @@
+openapi: '3.0.1'
+
+info:
+  title: resource
+  version: "1"
+  description: Test Resource
+
+servers:
+  - url: http://localhost:8080/api
+    description: Local server
+
+paths:
+
+  /resource:
+    post:
+      summary: create Resource
+      operationId: createResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+
+  /resource/{id}:
+    get:
+      summary: Get Resource By Id
+      operationId: getResourceById
+      parameters:
+        - name: id
+          in: path
+          description: Unique Id of a Resource
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /resource/update:
+    put:
+      summary: update Resource
+      operationId: updateResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Resource'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+  /resource/delete/{id}:
+    delete:
+      summary: Delete Resource By Id
+      operationId: deleteResourceById
+      parameters:
+        - name: id
+          in: path
+          description: Unique Id of a Resource
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+
+components:
+  schemas:
+    Resource:
+      type: object
+      description: Resource POJO
+      x-jpa-table-name: resource
+      required:
+        - id
+      properties:
+        id:
+          type: integer
+          uniqueItems: true
+          x-jpa-id: true
+        name:
+          type: string
+        resourceType:
+          type: string
+      x-class-extra-annotation: '@jakarta.persistence.Entity @jakarta.persistence.Table(name= "resource")'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
